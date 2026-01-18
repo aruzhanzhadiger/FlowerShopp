@@ -1,5 +1,5 @@
 
-import java.sql.*;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,27 +10,40 @@ public class FlowerRepository {
         this.conn = conn;
     }
 
-    public void addFlower(String name, double price) throws SQLException {
-        String sql = "INSERT INTO flowers(name, price) VALUES(?, ?)";
-        PreparedStatement ps = conn.prepareStatement(sql);
-        ps.setString(1, name);
-        ps.setDouble(2, price);
-        ps.executeUpdate();
-        ps.close();
+    public void addFlower(String name, int price)  {
+        try {
+            String sql = "INSERT INTO flowers(name, price) VALUES(?, ?)";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, name);
+            stmt.setInt(2, price);
+            stmt.executeUpdate();
+            stmt.close();
+        } catch (Exception e) {
+            System.out.println("Error" + e.getMessage());
+        }
     }
 
-    public List<Flower> getALLFlowers() throws SQLException {
-        List<Flower> flowers = new ArrayList<>();
+    public List<Flower> getALLFlowers()  {
+        List<Flower> list = new ArrayList<>();
+
+        try {
         String sql = "SELECT id, name, price FROM flowers";
-        Statement st = conn.createStatement();
+        Statement stmt = conn.createStatement();
         ResultSet rs = st.executeQuery(sql);
 
         while (rs.next()) {
-            int id = rs.getInt("id");
-            String name = rs.getString("name");
-            double price = rs.getDouble("price");
-            flowers.add(new Flower(id, name, price));
+            list.add(new Flower(
+                rs.getInt("id"),
+                rs.getString("name"),
+                rs.getInt("price")
+                ));
         }
-        return flowers;
+        rs.close();
+        stmt.close();
+
+ }    catch (Exception e) {
+        System.out.println("Error" + e.getMessage());
+        }
+        return list;
     }
 }
