@@ -1,4 +1,7 @@
+package controllers;
+
 import entity.Flower;
+import service.FlowerService;
 
 import java.security.Provider;
 import java.sql.SQLException;
@@ -40,7 +43,10 @@ public class FlowerController {
         System.out.print("Price: ");
         double price = scanner.nextDouble();
 
-        service.createFlower(name, price);
+        System.out.print("Stock: ");
+        int stock = scanner.nextInt();
+
+        service.createFlower(New Flower( name, price, stock));
     }
 
     private void showFlowers() throws SQLException {
