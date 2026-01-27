@@ -1,5 +1,8 @@
+package repositories;
 
-import java.sql.Connection;
+import entity.Flower;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,40 +13,29 @@ public class FlowerRepository {
         this.conn = conn;
     }
 
-    public void addFlower(String name, int price)  {
-        try {
-            String sql = "INSERT INTO flowers(name, price) VALUES(?, ?)";
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setString(1, name);
-            stmt.setInt(2, price);
-            stmt.executeUpdate();
-            stmt.close();
-        } catch (Exception e) {
-            System.out.println("Error" + e.getMessage());
-        }
+    public void addFlower(Flower flower) throws SQLException {
+        String sql = "INSERT INTO flowers(name, price, stock) VALUES(?, ?, ?)";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1, flower.getName());
+        ps.setDouble(2, flower.getPrice());
+        ps.setInt(3, flower.getStock());
+        ps.executeUpdate();
+        ps.close();
     }
 
-    public List<Flower> getALLFlowers()  {
-        List<Flower> list = new ArrayList<>();
-
-        try {
-        String sql = "SELECT id, name, price FROM flowers";
-        Statement stmt = conn.createStatement();
+    public List<Flower> getALLFlowers() throws SQLException {
+        List<Flower> flowers = new ArrayList<>();
+        String sql = "SELECT id, name, price, stock FROM flowers";
+        Statement st = conn.createStatement();
         ResultSet rs = st.executeQuery(sql);
 
         while (rs.next()) {
-            list.add(new Flower(
-                rs.getInt("id"),
-                rs.getString("name"),
-                rs.getInt("price")
-                ));
+            int id = rs.getInt("id");
+            String name = rs.getString("name");
+            double price = rs.getDouble("price");
+            int stock = rs.getInt("stock");
+            flowers.add(new Flower(id, name, price, stock));
         }
-        rs.close();
-        stmt.close();
-
- }    catch (Exception e) {
-        System.out.println("Error" + e.getMessage());
-        }
-        return list;
+        return flowers;
     }
 }
