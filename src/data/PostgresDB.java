@@ -1,7 +1,5 @@
 package data;
-
 import data.interfaces.IDB;
-
 import java.sql.*;
 
 public class PostgresDB implements IDB {
