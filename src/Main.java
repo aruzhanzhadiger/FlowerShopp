@@ -1,19 +1,25 @@
+import controllers.FlowerController;
+import data.PostgresDB;
+import data.interfaces.IDB;
+import entity.Flower;
+import repositories.FlowerRepository;
+import service.FlowerService;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+
 public class Main {
     public static void main(String[] args) {
         try {
-            Connection conn = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/postgres",
-                    "postgres",
-                    "0000"
-            );
-            FlowerRepository repo = new FlowerRepository(conn);
-            repo.addFlower("Rose", 2000.0);
-            repo.addFlower("Tulip", 1250);
+            IDB db = new PostgresDB("jdbc:postgresql://localhost:5432", "postgres", "0000", "FlowerShop");
 
-            System.out.println("Flower in DB:");
-            for (Flower f : repo.getALLFlowers()) {
-                System.out.println(f);
-            }
+            Connection conn = db.getConnection();
+
+            FlowerRepository repo = new FlowerRepository(conn);
+            FlowerService service = new FlowerService(repo);
+            FlowerController controller = new FlowerController(service);
+
+            controller.start();
         } catch (Exception e) {
             e.printStackTrace();
         }
