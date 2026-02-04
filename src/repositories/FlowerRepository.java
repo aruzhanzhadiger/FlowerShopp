@@ -38,4 +38,35 @@ public class FlowerRepository {
         }
         return flowers;
     }
+    public Flower getFlowerById(int id) throws SQLException {
+        String sql = "SELECT id, name, price, stock FROM flowers WHERE id = ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            return new Flower(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getDouble("price"),
+                    rs.getInt("stock")
+            );
+        }
+        return null;
+    }
+
+    public void updateStock(int id, int stock) throws SQLException {
+        String sql = "UPDATE flowers SET stock = ? WHERE id = ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setInt(1, stock);
+        ps.setInt(2, id);
+        ps.executeUpdate();
+    }
+
+    public void deleteFlower(int id) throws SQLException {
+        String sql = "DELETE FROM flowers WHERE id = ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setInt(1, id);
+        ps.executeUpdate();
+    }
 }
