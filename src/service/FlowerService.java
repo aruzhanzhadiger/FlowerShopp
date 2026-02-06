@@ -15,7 +15,6 @@ public class FlowerService {
         this.repo = repo;
     }
 
-    // Data validation
     public void createFlower(Flower flower) throws SQLException {
         if (flower == null) {
             System.out.println("Flower is null.");
@@ -43,7 +42,6 @@ public class FlowerService {
     }
 
     public List<Flower> listFlowers() throws SQLException {
-        // Lambda expression usage: sorting before returning
         return repo.getAllFlowers()
                 .stream()
                 .sorted(Comparator.comparing(Flower::getId))
