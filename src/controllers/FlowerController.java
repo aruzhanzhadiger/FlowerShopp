@@ -90,7 +90,6 @@ public class FlowerController {
             return;
         }
 
-        // lambda expression
         flowers.forEach(System.out::println);
     }
 
@@ -143,7 +142,6 @@ public class FlowerController {
         return currentUser.getRole() == Role.ADMIN;
     }
 
-    // --- Safe input helpers (validation) ---
     private int readIntSafe() {
         while (!scanner.hasNextInt()) {
             System.out.print("Enter a valid integer: ");
