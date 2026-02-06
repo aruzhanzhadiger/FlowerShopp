@@ -5,43 +5,44 @@ public class Flower {
     private String name;
     private double price;
     private int stock;
+    private Category category;
 
-    public Flower(int id, String name, double price, int stock) {
-        this(name, price, stock);
-
-        setId(id);
-    }
-
-    public Flower(String name, double price, int stock) {
-        setName(name);
-        setPrice(price);
-        setStock(stock);
-    }
-
-    public int getId() { return id; }
-
-    public void setId(int id) {
+    public Flower(int id, String name, double price, int stock, Category category) {
         this.id = id;
+        this.name = name;
+        this.price = price;
+        this.stock = stock;
+        this.category = category;
+    }
+
+    public Flower(String name, double price, int stock, Category category) {
+        this.name = name;
+        this.price = price;
+        this.stock = stock;
+        this.category = category;
+    }
+
+    public Flower(int flowerId, String name, double price, int i) {
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
     public int getStock() {
         return stock;
+    }
+
+    public Category getCategory() {
+        return category;
     }
 
     public void setStock(int stock) {
@@ -50,6 +51,7 @@ public class Flower {
 
     @Override
     public String toString() {
-        return id + ". " + name + " - " + price + "tg";
+        String cat = (category == null) ? "NoCategory" : category.getName();
+        return id + ". " + name + " (" + cat + ") - " + price + " tg, Stock: " + stock;
     }
 }
