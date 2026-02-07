@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class FlowerController {
+    private static final String ADMIN_PASSWORD = "1234";
     private final FlowerService service;
     private final CategoryRepository categoryRepo;
     private final Scanner scanner = new Scanner(System.in);
@@ -28,7 +29,22 @@ public class FlowerController {
         System.out.print("Role (1=ADMIN, 2=BUYER): ");
         int r = readIntSafe();
 
-        Role role = (r == 1) ? Role.ADMIN : Role.BUYER;
+        Role role;
+        if (r == 1) {
+            System.out.print("Enter admin password: ");
+            String pass = scanner.nextLine().trim();
+
+            if (ADMIN_PASSWORD.equals(pass)) {
+                role = Role.ADMIN;
+                System.out.println(" Admin access granted.");
+            } else {
+                role = Role.BUYER;
+                System.out.println(" Wrong password. You are logged in as BUYER.");
+            }
+        } else {
+            role = Role.BUYER;
+        }
+
         this.currentUser = UserFactory.createBuyer(name, role);
 
         System.out.println(" Logged in as: " + currentUser.getName() + " (" + currentUser.getRole() + ")");
